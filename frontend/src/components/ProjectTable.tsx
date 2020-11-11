@@ -6,7 +6,6 @@ import { ProjectDTO } from '../api/apis';
 interface Props {
   projects: ProjectDTO[];
   setSelectedProject: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useStyles = makeStyles({
@@ -16,12 +15,11 @@ const useStyles = makeStyles({
   }
 });
 
-export default function ProjectTable({ setSelectedProject, setIsDrawerOpen, projects }: Props) {
+export default function ProjectTable({ setSelectedProject, projects }: Props) {
   const classes = useStyles();
   const [isDescending, setIsDescending] = useState(true);
 
   const handleCellClick = (selectedProject: string) => {
-    setIsDrawerOpen(true);
     setSelectedProject(selectedProject);
   };
 
@@ -40,9 +38,9 @@ export default function ProjectTable({ setSelectedProject, setIsDrawerOpen, proj
 
     projects.sort((a, b) => {
       if (isDescending) {
-        return -getComperator(a, b);
+        return -getComperator(a.name, b.name);
       }
-      return getComperator(a, b);
+      return getComperator(a.name, b.name);
     });
   };
 

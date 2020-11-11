@@ -28,3 +28,8 @@ export const getDocumentsByProjectId = async (projectId: string): Promise<Docume
 
   return documents;
 };
+
+export const getDocumentByDocumentId = async (documentId: string): Promise<BlobPart> => {
+  const document = await get(baseUrl + '/document/' + documentId, { responseType: 'blob' }).then(response => response.data);
+  return document;
+};

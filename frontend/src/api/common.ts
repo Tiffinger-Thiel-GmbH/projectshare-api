@@ -1,4 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-export const get = async (apiPath: string) => axios.get(apiPath);
+export const get = async (apiPath: string, axiosConfig?: AxiosRequestConfig) => axios.get(apiPath, axiosConfig);

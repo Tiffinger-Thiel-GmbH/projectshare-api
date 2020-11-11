@@ -5,7 +5,6 @@ import { Grid, Container, Box } from '@material-ui/core';
 import { DocumentDTO, getDocumentsByProjectId, getProjects, ProjectDTO } from '../api/apis';
 
 export default function Content() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string>();
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
   const [documents, setDocuments] = useState<DocumentDTO[]>([]);
@@ -21,16 +20,14 @@ export default function Content() {
   return (
     <>
       <Container maxWidth="xl">
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={4}>
           <Grid item xs={6}>
             <Box ml={8}>
-              {projects && !!projects.length && (
-                <ProjectTable setIsDrawerOpen={setIsDrawerOpen} setSelectedProject={setSelectedProject} projects={projects} />
-              )}
+              {projects && !!projects.length && <ProjectTable setSelectedProject={setSelectedProject} projects={projects} />}
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Box mr={8}>{documents && !!documents.length && <DocumentTable selectedProject={selectedProject} documents={documents} />}</Box>
+            <Box mr={8}>{documents && !!documents.length && <DocumentTable documents={documents} />}</Box>
           </Grid>
         </Grid>
       </Container>
