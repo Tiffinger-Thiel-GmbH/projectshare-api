@@ -1,0 +1,9 @@
+{
+  "watch": ["dist"],
+  "ext": "js",
+  "exec": "node dist/index",
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": 3001
+  }
+}
