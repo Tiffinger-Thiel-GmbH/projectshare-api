@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TableSortLabel } from '@material-ui/core';
+import { ProjectDTO } from '../api/apis';
 
 interface Props {
-  setSelectedProject: React.Dispatch<React.SetStateAction<number | undefined>>;
+  projects: ProjectDTO[];
+  setSelectedProject: React.Dispatch<React.SetStateAction<string | undefined>>;
   setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -14,13 +16,11 @@ const useStyles = makeStyles({
   }
 });
 
-const projects = ['Projekt 1', 'Projekt 2', 'Projekt 3', 'Projekt 4', 'Projekt 5'];
-
-export default function ProjectTable({ setSelectedProject, setIsDrawerOpen }: Props) {
+export default function ProjectTable({ setSelectedProject, setIsDrawerOpen, projects }: Props) {
   const classes = useStyles();
   const [isDescending, setIsDescending] = useState(true);
 
-  const handleCellClick = (selectedProject: number) => {
+  const handleCellClick = (selectedProject: string) => {
     setIsDrawerOpen(true);
     setSelectedProject(selectedProject);
   };
@@ -67,8 +67,8 @@ export default function ProjectTable({ setSelectedProject, setIsDrawerOpen }: Pr
               <TableCell padding="checkbox">
                 <Checkbox />
               </TableCell>
-              <TableCell component="th" scope="row" onClick={() => handleCellClick(i)}>
-                {project}
+              <TableCell component="th" scope="row" onClick={() => handleCellClick(project.id)}>
+                {project.name}
               </TableCell>
             </TableRow>
           ))}
