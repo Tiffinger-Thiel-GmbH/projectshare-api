@@ -2,9 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@material-ui/core';
+import { DocumentDTO } from '../api/apis';
 
 interface Props {
   selectedProject: number;
+  documents: DocumentDTO[];
 }
 
 const useStyles = makeStyles({
@@ -13,10 +15,8 @@ const useStyles = makeStyles({
     cursor: 'pointer'
   }
 });
-export default function DocumentTable({ selectedProject }: Props) {
+export default function DocumentTable({ selectedProject, documents }: Props) {
   const classes = useStyles();
-
-  const documents = ['Document 1', 'Document 2', 'Document 3', 'Document 4', 'Document 5'];
 
   return (
     <>
@@ -36,8 +36,8 @@ export default function DocumentTable({ selectedProject }: Props) {
                 <TableCell padding="checkbox">
                   <Checkbox />
                 </TableCell>
-                <TableCell component="th" scope="row" onClick={() => handleCellClick(i)}>
-                  {document}
+                <TableCell component="th" scope="row" onClick={() => handleCellClick(document.id)}>
+                  {document.name}
                 </TableCell>
               </TableRow>
             ))}

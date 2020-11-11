@@ -7,7 +7,7 @@ const App = () => {
     <Router>
       <div>
         <Switch>
-           <Route path="/">
+          <Route path="/">
             <Home />
           </Route>
         </Switch>
