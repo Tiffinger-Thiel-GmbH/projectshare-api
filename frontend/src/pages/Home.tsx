@@ -1,7 +1,17 @@
 import * as React from 'react';
+import AppBar from './AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Content from './Content';
 
 const Home = () => {
-  return <h1>OfficeShare - projektspezifische Dokumentenverwaltung</h1>;
+  return (
+    <>
+      <CssBaseline />
+
+      <AppBar />
+      <Content />
+    </>
+  );
 };
 
 export default Home;
