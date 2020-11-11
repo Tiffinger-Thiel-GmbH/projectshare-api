@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TableSortLabel } from '@material-ui/core';
 
@@ -18,10 +18,32 @@ const projects = ['Projekt 1', 'Projekt 2', 'Projekt 3', 'Projekt 4', 'Projekt 5
 
 export default function ProjectTable({ setSelectedProject, setIsDrawerOpen }: Props) {
   const classes = useStyles();
+  const [isDescending, setIsDescending] = useState(true);
 
   const handleCellClick = (selectedProject: number) => {
     setIsDrawerOpen(true);
     setSelectedProject(selectedProject);
+  };
+
+  const sortByName = () => {
+    setIsDescending(currentState => !currentState);
+
+    function getComperator(a: string, b: string) {
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    }
+
+    projects.sort((a, b) => {
+      if (isDescending) {
+        return -getComperator(a, b);
+      }
+      return getComperator(a, b);
+    });
   };
 
   return (
@@ -33,7 +55,9 @@ export default function ProjectTable({ setSelectedProject, setIsDrawerOpen }: Pr
               <Checkbox />
             </TableCell>
             <TableCell>
-              <TableSortLabel>Name</TableSortLabel>
+              <TableSortLabel active direction={isDescending ? 'desc' : 'asc'} onClick={sortByName}>
+                Name
+              </TableSortLabel>
             </TableCell>
           </TableRow>
         </TableHead>
