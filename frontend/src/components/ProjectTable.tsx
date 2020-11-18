@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TableSortLabel } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
 import { ProjectDTO } from '../api/apis';
 
 interface Props {
@@ -49,9 +49,6 @@ export default function ProjectTable({ setSelectedProject, projects }: Props) {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell padding="checkbox">
-              <Checkbox />
-            </TableCell>
             <TableCell>
               <TableSortLabel active direction={isDescending ? 'desc' : 'asc'} onClick={sortByName}>
                 Name
@@ -62,9 +59,6 @@ export default function ProjectTable({ setSelectedProject, projects }: Props) {
         <TableBody>
           {projects.map((project, i) => (
             <TableRow hover key={i}>
-              <TableCell padding="checkbox">
-                <Checkbox />
-              </TableCell>
               <TableCell component="th" scope="row" onClick={() => handleCellClick(project.id)}>
                 {project.name}
               </TableCell>

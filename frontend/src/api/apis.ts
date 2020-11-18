@@ -1,4 +1,4 @@
-import { get } from './common';
+import { get, post } from './common';
 
 export interface ProjectDTO {
   id: string;
@@ -7,11 +7,11 @@ export interface ProjectDTO {
 
 export interface DocumentDTO {
   id: string;
-  bucket: string;
+  location: string;
   name: string;
 }
 
-const baseUrl = 'http://localhost:7777';
+export const baseUrl = 'http://localhost:7777';
 
 export const getProjects = async (): Promise<ProjectDTO[]> => {
   const projects = await get(baseUrl + '/project').then(response => response.data);
@@ -29,7 +29,26 @@ export const getDocumentsByProjectId = async (projectId: string): Promise<Docume
   return documents;
 };
 
-export const getDocumentByDocumentId = async (documentId: string): Promise<BlobPart> => {
-  const document = await get(baseUrl + '/document/' + documentId, { responseType: 'blob' }).then(response => response.data);
+/**
+ *
+ * @param documentId the id of the document you want to download
+ * @param locationId the id of the location where the desired document is stored (projectId)
+ */
+export const getDocumentByDocumentId = async (documentId: string, locationId: string): Promise<BlobPart> => {
+  const document = await get(baseUrl + '/document/' + locationId + '/' + documentId, { responseType: 'blob' }).then(
+    response => response.data
+  );
   return document;
+};
+
+export const uploadDocument = async (locationId: string, file: FormData): Promise<void> => {
+  const result = await post(baseUrl + '/document/' + locationId, file).then(response => response.data);
+
+  return result;
+};
+
+export const createProject = async (name: string): Promise<void> => {
+  const result = await post(baseUrl + '/project', { name }).then(response => response.data);
+
+  return result;
 };

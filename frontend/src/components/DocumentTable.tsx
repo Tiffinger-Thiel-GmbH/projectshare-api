@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TableSortLabel } from '@material-ui/core';
-import { DocumentDTO, getDocumentByDocumentId } from '../api/apis';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
+import { DocumentDTO, baseUrl } from '../api/apis';
 
 interface Props {
   documents: DocumentDTO[];
@@ -34,13 +34,9 @@ const sortByName = (documents: DocumentDTO[], isDescending: boolean) => {
   });
 };
 
-const handleCellClick = async (doc: DocumentDTO) => {
-  const myDocument = await getDocumentByDocumentId(doc.id);
-  const blopDocument = new Blob([myDocument], { type: 'octet/stream' });
-  const documentUrl = window.URL.createObjectURL(blopDocument);
-
+const handleCellClick = (doc: DocumentDTO) => {
   const link = document.createElement('a');
-  link.href = documentUrl;
+  link.href = baseUrl + '/document/' + doc.location + '/' + doc.id;
   link.setAttribute('download', doc.name);
   document.body.appendChild(link);
   link.click();
@@ -61,9 +57,6 @@ export default function DocumentTable({ documents }: Props) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox />
-              </TableCell>
               <TableCell>
                 <TableSortLabel active direction={isDescending ? 'desc' : 'asc'} onClick={() => setIsDescending(current => !current)}>
                   Name
@@ -74,9 +67,6 @@ export default function DocumentTable({ documents }: Props) {
           <TableBody>
             {sortedDocuments.map((document, i) => (
               <TableRow key={i} hover={true}>
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
                 <TableCell component="th" scope="row" onClick={() => handleCellClick(document)}>
                   {document.name}
                 </TableCell>
