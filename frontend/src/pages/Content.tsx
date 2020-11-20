@@ -25,7 +25,11 @@ export default function Content() {
   }, [projectToCreate]);
 
   useEffect(() => {
-    if (selectedProject) getDocumentsByProjectId(selectedProject).then(setDocuments);
+    if (selectedProject) {
+      getDocumentsByProjectId(selectedProject).then(setDocuments);
+    } else {
+      setDocuments([]);
+    }
   }, [selectedProject, documentToUpload]);
 
   const onUploadDocument = async (file?: File | null) => {
@@ -76,7 +80,13 @@ export default function Content() {
               <div className={style.margin}>
                 <Grid container spacing={1} alignItems="flex-end" style={{ minHeight: '56px' }}>
                   <Grid item xs={12}>
-                    <Button onClick={() => fileUpload.current?.click()} variant="contained" color="default" startIcon={<CloudUploadIcon />}>
+                    <Button
+                      onClick={() => fileUpload.current?.click()}
+                      variant="contained"
+                      color="default"
+                      disabled={selectedProject === undefined || selectedProject?.length == 0}
+                      startIcon={<CloudUploadIcon />}
+                    >
                       Upload
                     </Button>
                     <input
