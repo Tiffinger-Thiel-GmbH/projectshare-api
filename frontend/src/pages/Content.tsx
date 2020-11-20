@@ -68,36 +68,27 @@ export default function Content() {
                   </Grid>
                 </Grid>
               </div>
-              {projects && !!projects.length && <ProjectTable setSelectedProject={setSelectedProject} projects={projects} />}
+              <ProjectTable setSelectedProject={setSelectedProject} projects={projects} />
             </Box>
           </Grid>
           <Grid item xs={6}>
             <Box mr={8} mt={4} textAlign="center">
-              {documents && !!documents.length && (
-                <>
-                  <div className={style.margin}>
-                    <Grid container spacing={1} alignItems="flex-end" style={{ minHeight: '56px' }}>
-                      <Grid item xs={12}>
-                        <Button
-                          onClick={() => fileUpload.current?.click()}
-                          variant="contained"
-                          color="default"
-                          startIcon={<CloudUploadIcon />}
-                        >
-                          Upload
-                        </Button>
-                        <input
-                          type="file"
-                          style={{ display: 'none ' }}
-                          onChange={e => onUploadDocument(e.target.files?.item(0))}
-                          ref={fileUpload}
-                        />
-                      </Grid>
-                    </Grid>
-                  </div>
-                  <DocumentTable documents={documents} />
-                </>
-              )}
+              <div className={style.margin}>
+                <Grid container spacing={1} alignItems="flex-end" style={{ minHeight: '56px' }}>
+                  <Grid item xs={12}>
+                    <Button onClick={() => fileUpload.current?.click()} variant="contained" color="default" startIcon={<CloudUploadIcon />}>
+                      Upload
+                    </Button>
+                    <input
+                      type="file"
+                      style={{ display: 'none ' }}
+                      onChange={e => onUploadDocument(e.target.files?.item(0))}
+                      ref={fileUpload}
+                    />
+                  </Grid>
+                </Grid>
+              </div>
+              <DocumentTable documents={documents} />
             </Box>
           </Grid>
         </Grid>
