@@ -1,0 +1,58 @@
+name: Go-release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  dist:
+    name: Distribute
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.15
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Build
+      run: |
+        mkdir -p dist/lin-amd64 dist/win-amd64
+        cd dist/lin-amd64
+        GOOS=linux GOARCH=amd64 go build ../../cmd/projectshare-server
+        GOOS=linux GOARCH=amd64 go build ../../cmd/projectshare-server-memory
+        cd ../../dist/win-amd64
+        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server
+        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server-memory
+        cd ../../
+        zip -r projectshare-api.zip dist
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Assets
+      id: upload-release-assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./projectshare-api.zip
+        asset_name: projectshare-api.zip
+        asset_content_type: application/zip
