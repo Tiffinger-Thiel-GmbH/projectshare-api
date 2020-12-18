@@ -37,7 +37,7 @@ jobs:
         GOOS=linux GOARCH=amd64 go build ../../cmd/projectshare-server-memory
         cd ../../dist/win-amd64
         GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server
-        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-memory
+        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server-memory
         
     - name: Test
       run: go test -v ./...
