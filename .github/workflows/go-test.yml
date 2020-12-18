@@ -1,0 +1,60 @@
+name: Go-test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.15
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+    - name: Test
+      run: go test -v ./...
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.15
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Build
+      run: |
+        mkdir -p dist/lin-amd64 dist/win-amd64
+        cd dist/lin-amd64
+        GOOS=linux GOARCH=amd64 go build ../../cmd/projectshare-server
+        GOOS=linux GOARCH=amd64 go build ../../cmd/projectshare-server-memory
+        cd ../../dist/win-amd64
+        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server
+        GOOS=windows GOARCH=amd64 go build ../../cmd/projectshare-server-memory
+        
+    - name: Upload binaries
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        name: dist
+        path: "dist"
